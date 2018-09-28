@@ -106,10 +106,10 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
     val k1 = (kingX == rookX1) or (kingY == rookY1)
     val k2 = (kingX == rookX2) or (kingY == rookY2)
     return when {
-        k1  && k2  -> 3
-        !k1 && k2  -> 2
-        k1  && !k2 -> 1
-        else       -> 0
+        k1 && k2 -> 3
+        !k1 && k2 -> 2
+        k1 && !k2 -> 1
+        else -> 0
     }
 }
 
@@ -125,7 +125,16 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    if ((kingX == rookX) or (kingY == rookY) and (bishopX - kingX == bishopY - kingY)) return 3
+    else {
+        if ((kingX == rookX) or (kingY == rookY)) return 1
+        else {
+            if ((bishopX - kingX == bishopY - kingY) or (kingX - bishopX == bishopY - kingY)) return 2
+        }
+    }
+    return 0
+}
 
 /**
  * Простая
@@ -135,7 +144,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if (a < (b + c) && (b < (a + c)) && c < (a + b))
+        if ((a * a + b * b < c * c) or ((b * b + c * c < a * a)) or (c * c + a * a < b * b)) return 2
+        else if ((a * a + b * b == c * c) or ((b * b + c * c == a * a)) or (c * c + a * a == b * b)) return 1
+        else if ((a * a + b * b > c * c) or ((b * b + c * c > a * a)) or (c * c + a * a > b * b)) return 0
+    return -1
+}
 
 /**
  * Средняя
@@ -145,4 +160,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if (b >= c && a <= c && b <= d) return b - c
+    else return if (a <= d && c <= a && b >= d) d - a
+    else if (a >= c && b <= d) b - a
+    else if (a <= c && b >= d) d - c
+    else -1
+}
