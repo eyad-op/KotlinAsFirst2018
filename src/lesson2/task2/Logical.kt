@@ -27,8 +27,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    if (number % 10 + number / 10 % 10 == number / 100 % 10 + number / 1000) return true
-    else return false
+    return number % 10 + number / 10 % 10 == number / 100 % 10 + number / 1000
 }
 
 /**
@@ -40,8 +39,7 @@ fun isNumberHappy(number: Int): Boolean {
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
     return if ((x1 == x2) or (y2 == y1)) true
-    else if (Math.abs(x1 - x2) == Math.abs(y1 - y2)) true
-    else false
+    else Math.abs(x1 - x2) == Math.abs(y1 - y2)
 }
 
 
@@ -51,9 +49,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int) {
-    val daysInMonth = of(2000, 1)
-    val lengthOfMonth = daysInMonth.lengthOfMonth()
+fun daysInMonth(month: Int, year: Int): Int {
+    return when (month) {
+        1, 3, 5, 7, 8, 10, 12 -> 31
+        4, 6, 9, 11 -> 30
+        else -> if ((year % 4 == 0) && (year % 100 != 0) or (year % 400 == 0)) 29 else 28
+    }
 }
 
 /**
@@ -64,7 +65,10 @@ fun daysInMonth(month: Int, year: Int) {
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean {
+    val l = Math.sqrt(sqr(x2 - x1) + sqr(y2 - y1))
+    return l + r1 <= r2
+}
 
 /**
  * Средняя
@@ -75,4 +79,12 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    val b1 = (a <= r && b <= s) or
+            (b <= r && a <= s) or
+            (a <= r && c <= s) or
+            (a <= s && c <= r) or
+            (b <= r && c <= s) or
+            (c <= r && b <= s)
+    return b1
+}

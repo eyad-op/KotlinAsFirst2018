@@ -62,10 +62,10 @@ fun main(args: Array<String>) {
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
 fun seconds(hours: Int, minutes: Int, seconds: Int): Int {
-        val h = hours * 3600.0
-        val m = minutes * 60.0
-        return (seconds + h + m).toInt()
-    }
+    val h = hours * 3600.0
+    val m = minutes * 60.0
+    return (seconds + h + m).toInt()
+}
 
 /**
  * Тривиальная
@@ -138,7 +138,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val x = pow(1+percent*0.01, 3.0)
+    val x = pow(1 + percent * 0.01, 3.0)
     return initial * x
 }
 
@@ -148,9 +148,9 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int  {
-    val x = (number/100)
-    val y = (number-x*100)/10
-    val z = (number-10*y-100*x)
-    return 100*z + 10*y + x
+fun numberRevert(number: Int): Int {
+    val x = (number / 100)
+    val y = (number - x * 100) / 10
+    val z = (number - 10 * y - 100 * x)
+    return 100 * z + 10 * y + x
 }
