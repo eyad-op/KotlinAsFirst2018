@@ -3,13 +3,6 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
-import java.util.Calendar
-import java.time.YearMonth
-import java.util.GregorianCalendar
-import java.time.temporal.ChronoField
-import java.time.LocalDateTime
-import java.time.YearMonth.of
-import java.util.Calendar.*
 
 
 /**
@@ -80,11 +73,10 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    val b1 = (a <= r && b <= s) or
-            (b <= r && a <= s) or
-            (a <= r && c <= s) or
-            (a <= s && c <= r) or
-            (b <= r && c <= s) or
+    return (a <= r && b <= s) ||
+            (b <= r && a <= s) ||
+            (a <= r && c <= s) ||
+            (a <= s && c <= r) ||
+            (b <= r && c <= s) ||
             (c <= r && b <= s)
-    return b1
 }

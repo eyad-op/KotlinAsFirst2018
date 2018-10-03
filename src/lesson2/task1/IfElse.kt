@@ -64,10 +64,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if (age % 100 in 5..20) return "$age лет"
-    else if (age % 10 == 1) return "$age год"
-    else if (age % 10 in 2..4) return "$age года"
-    else return "$age лет"
+    return when {
+        age % 100 in 5..20 -> "$age лет"
+        age % 10 == 1 -> "$age год"
+        age % 10 in 2..4 -> "$age года"
+        else -> "$age лет"
+    }
 }
 
 /**
@@ -126,11 +128,13 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    if ((kingX == rookX) or (kingY == rookY) and (bishopX - kingX == bishopY - kingY)) return 3
-    else {
-        if ((kingX == rookX) or (kingY == rookY)) return 1
-        else {
-            if ((bishopX - kingX == bishopY - kingY) or (kingX - bishopX == bishopY - kingY)) return 2
+    when {
+        (kingX == rookX) || (kingY == rookY) and (bishopX - kingX == bishopY - kingY) -> return 3
+        else -> when {
+            (kingX == rookX) || (kingY == rookY) -> return 1
+            else -> when {
+                (bishopX - kingX == bishopY - kingY) || (kingX - bishopX == bishopY - kingY) -> return 2
+            }
         }
     }
     return 0
@@ -146,9 +150,11 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if (a < (b + c) && (b < (a + c)) && c < (a + b))
-        if ((a * a + b * b < c * c) or ((b * b + c * c < a * a)) or (c * c + a * a < b * b)) return 2
-        else if ((a * a + b * b == c * c) or ((b * b + c * c == a * a)) or (c * c + a * a == b * b)) return 1
-        else if ((a * a + b * b > c * c) or ((b * b + c * c > a * a)) or (c * c + a * a > b * b)) return 0
+        when {
+            (a * a + b * b < c * c) || ((b * b + c * c < a * a)) || (c * c + a * a < b * b) -> return 2
+            (a * a + b * b == c * c) || ((b * b + c * c == a * a)) || (c * c + a * a == b * b) -> return 1
+            (a * a + b * b > c * c) || ((b * b + c * c > a * a)) || (c * c + a * a > b * b) -> return 0
+        }
     return -1
 }
 
@@ -161,8 +167,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (b >= c && a <= c && b <= d) return b - c
-    else return if (a <= d && c <= a && b >= d) d - a
+    return if (c in a..b && b <= d) b - c
+    else if (a in c..d && b >= d) d - a
     else if (a >= c && b <= d) b - a
     else if (a <= c && b >= d) d - c
     else -1

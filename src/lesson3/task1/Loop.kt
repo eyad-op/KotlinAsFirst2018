@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 
@@ -168,21 +169,21 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
 
 @Suppress("NAME_SHADOWING")
         /**
- * Средняя
- *
- * Гипотеза Коллатца. Рекуррентная последовательность чисел задана следующим образом:
- *
- *   ЕСЛИ (X четное)
- *     Xслед = X /2
- *   ИНАЧЕ
- *     Xслед = 3 * X + 1
- *
- * например
- *   15 46 23 70 35 106 53 160 80 40 20 10 5 16 8 4 2 1 4 2 1 4 2 1 ...
- * Данная последовательность рано или поздно встречает X == 1.
- * Написать функцию, которая находит, сколько шагов требуется для
- * этого для какого-либо начального X > 0.
- */
+         * Средняя
+         *
+         * Гипотеза Коллатца. Рекуррентная последовательность чисел задана следующим образом:
+         *
+         *   ЕСЛИ (X четное)
+         *     Xслед = X /2
+         *   ИНАЧЕ
+         *     Xслед = 3 * X + 1
+         *
+         * например
+         *   15 46 23 70 35 106 53 160 80 40 20 10 5 16 8 4 2 1 4 2 1 4 2 1 ...
+         * Данная последовательность рано или поздно встречает X == 1.
+         * Написать функцию, которая находит, сколько шагов требуется для
+         * этого для какого-либо начального X > 0.
+         */
 fun collatzSteps(x: Int): Int {
     if (x < 1) throw IllegalArgumentException()
     var steps = 0
@@ -202,7 +203,20 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val a = x % (2 * Math.PI)
+    var i = 1
+    var result = 0.0
+    var k = 1
+    do {
+        if (k % 2 == 1) result += Math.pow(a, i.toDouble()) / factorial(i)
+        else result -= Math.pow(a, i.toDouble()) / factorial(i)
+        i += 2
+        k++
+    } while (Math.abs(Math.pow(a, i.toDouble()) / factorial(i)) >= eps)
+    return result
+}
+
 
 /**
  * Средняя
@@ -211,7 +225,19 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val a = x % (2 * Math.PI)
+    var i = 0
+    var result = 0.0
+    var k = 1
+    do {
+        if (k % 2 == 1) result += Math.pow(a, i.toDouble()) / factorial(i)
+        else result -= Math.pow(a, i.toDouble()) / factorial(i)
+        i += 2
+        k++
+    } while (Math.abs(Math.pow(a, i.toDouble()) / factorial(i)) >= eps)
+    return result
+}
 
 /**
  * Средняя
@@ -220,7 +246,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var x = 0
+    var number = n
+    while (number > 0) {
+        x = x * 10 + number % 10
+        number /= 10
+    }
+    return x
+}
 
 /**
  * Средняя
@@ -231,7 +265,10 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    val reverted = revert(n)
+    return reverted == n
+}
 
 /**
  * Средняя
@@ -241,7 +278,17 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var number = n
+    val mod = n % 10
+    for (i in digitNumber(n) downTo 1) {
+        if (number % 10 != mod) {
+            return true
+        }
+        number /= 10
+    }
+    return false
+}
 
 /**
  * Сложная
