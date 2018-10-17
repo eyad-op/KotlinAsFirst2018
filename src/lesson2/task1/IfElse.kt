@@ -128,16 +128,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    when {
-        (kingX == rookX) || (kingY == rookY) and (bishopX - kingX == bishopY - kingY) -> return 3
-        else -> when {
-            (kingX == rookX) || (kingY == rookY) -> return 1
-            else -> when {
-                (bishopX - kingX == bishopY - kingY) || (kingX - bishopX == bishopY - kingY) -> return 2
-            }
-        }
+    val x = (kingX == rookX) || (kingY == rookY)
+    val y = (Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY))
+    return when {
+        x && y -> 3
+        !x && y -> 2
+        x && !y -> 1
+        else -> 0
     }
-    return 0
 }
 
 /**
@@ -149,14 +147,17 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a < (b + c) && (b < (a + c)) && c < (a + b))
-        when {
-            (a * a + b * b < c * c) || ((b * b + c * c < a * a)) || (c * c + a * a < b * b) -> return 2
-            (a * a + b * b == c * c) || ((b * b + c * c == a * a)) || (c * c + a * a == b * b) -> return 1
-            (a * a + b * b > c * c) || ((b * b + c * c > a * a)) || (c * c + a * a > b * b) -> return 0
-        }
-    return -1
+    val A = a * a
+    val B = b * b
+    val C = c * c
+    return when {
+        ((a + b) < c) || ((a + c) < b) || ((b + c) < a) -> -1
+        ((A + B) == C) || ((A + C) == B) || ((B + C) == A) -> 1
+        ((A + B) < C) || ((A + C) < B) || ((B + C) < A) -> 2
+        else -> 0
+    }
 }
+
 
 /**
  * Средняя
