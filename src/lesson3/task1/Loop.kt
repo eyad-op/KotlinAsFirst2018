@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -94,7 +95,7 @@ fun fib(n: Int): Int {
         a = b
         b = c
     }
-    return (c)
+    return c
 }
 
 /**
@@ -107,8 +108,8 @@ fun lcm(m: Int, n: Int): Int {
     val min = Math.min(n, m)
     var k = 1
     for (i in 2..min)
-        if (((m % i) == 0) && ((n % i) == 0)) k = i
-    return (m * n / k)
+        if (m % i == 0 && n % i == 0) k = i
+    return m * n / k
 }
 
 /**
@@ -119,8 +120,8 @@ fun lcm(m: Int, n: Int): Int {
 fun minDivisor(n: Int): Int {
     for (i in 2..n)
         if (n % i == 0)
-            return (i)
-    return (n)
+            return i
+    return n
 }
 
 /**
@@ -131,7 +132,7 @@ fun minDivisor(n: Int): Int {
 fun maxDivisor(n: Int): Int {
     for (i in n / 2 downTo 1)
         if (n % i == 0)
-            return (i)
+            return i
     return 1
 }
 
@@ -146,7 +147,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     val min = Math.min(n, m)
     var k = 1
     for (i in 2..min)
-        if (((m % i) == 0) && ((n % i) == 0)) k = i
+        if (m % i == 0 && n % i == 0) k = i
     return k == 1
 }
 
@@ -162,7 +163,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     val upperLimit = Math.sqrt(n.toDouble()).toInt()
     for (k in lowerLimit..upperLimit) {
         val sqrK = k * k
-        if ((m <= sqrK) && (sqrK <= n)) return true
+        if (sqrK in m..n) return true
     }
     return false
 }
@@ -205,15 +206,14 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double {
     val a = x % (2 * Math.PI)
-    var i = 1
+    var i = a
     var result = 0.0
     var k = 1
-    do {
-        if (k % 2 == 1) result += Math.pow(a, i.toDouble()) / factorial(i)
-        else result -= Math.pow(a, i.toDouble()) / factorial(i)
-        i += 2
-        k++
-    } while (Math.abs(Math.pow(a, i.toDouble()) / factorial(i)) >= eps)
+    while (Math.abs(i) > eps) {
+        result += i
+        i *= -sqr(a) / ((k + 1) * (k + 2))
+        k += 2
+    }
     return result
 }
 
@@ -227,15 +227,14 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     val a = x % (2 * Math.PI)
-    var i = 0
+    var i = 1.0
     var result = 0.0
-    var k = 1
-    do {
-        if (k % 2 == 1) result += Math.pow(a, i.toDouble()) / factorial(i)
-        else result -= Math.pow(a, i.toDouble()) / factorial(i)
-        i += 2
-        k++
-    } while (Math.abs(Math.pow(a, i.toDouble()) / factorial(i)) >= eps)
+    var k = 0
+    while (Math.abs(i) > eps) {
+        result += i
+        i *= -sqr(a) / ((k + 1) * (k + 2))
+        k += 2
+    }
     return result
 }
 
