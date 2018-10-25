@@ -95,7 +95,7 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    var newPhnBok = mapA.toMutableMap()
+    val newPhnBok = mapA.toMutableMap()
     mapB.forEach { key, value ->
         newPhnBok.merge(key, value)
         { existed, _ ->
@@ -268,7 +268,22 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    val map = list.toMutableList()
+    list.toSet().toList().forEach { s ->
+        val x = 0
+        while (map.contains(s)) {
+            x.inc()
+            map.remove(s)
+        }
+        when {
+            x > 1 -> result[s] = x
+        }
+    }
+    return result
+}
+
 
 /**
  * Средняя
