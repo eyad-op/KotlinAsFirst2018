@@ -2,6 +2,10 @@
 
 package lesson5.task1
 
+import java.util.ArrayList
+
+
+
 /**
  * Пример
  *
@@ -227,15 +231,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit =
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val people = mutableListOf<String>()
-    a.forEach { name ->
-        when (name) {
-            in b -> people.add(name)
-        }
-    }
-    return people.toSet().toList()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().intersect(b.toSet()).toList()
 
 /**
  * Средняя
@@ -246,15 +242,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val char = chars.joinToString()
-    for (it in word) {
-        when {
-            it.toLowerCase() !in char.toLowerCase() -> return false
-        }
-    }
-    return true
-}
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.map { it.toLowerCase() }.containsAll(word.toLowerCase().toSet())
 
 /**
  * Средняя
@@ -268,20 +256,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> {
+fun extractRepeats(list: List<String>): Map<String, Int>  {
     val result = mutableMapOf<String, Int>()
-    val map = list.toMutableList()
-    list.toSet().toList().forEach { s ->
-        val x = 0
-        while (map.contains(s)) {
-            x.inc()
-            map.remove(s)
-        }
-        when {
-            x > 1 -> result[s] = x
-        }
+    list.forEach { char ->
+        result[char] = (result[char] ?: 0) + 1
     }
-    return result
+    return result.filter { (_, it) -> it > 1 }
 }
 
 
@@ -314,6 +294,7 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+
 
 /**
  * Очень сложная

@@ -4,7 +4,6 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.minDivisor
-import lesson6.task1.fromRoman
 import kotlin.math.sqrt
 
 /**
@@ -117,14 +116,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    var sum = 0.0
-    for (element in v) {
-        val sqrElement = element * element
-        sum += sqrElement
-    }
-    return Math.sqrt(sum)
-}
+fun abs(v: List<Double>): Double = sqrt(v.map { it -> it * it }.sum())
+
 
 /**
  * Простая
@@ -132,13 +125,12 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    var averageSum = 0.0
-    var sum = 0.0
-    for (element in list) {
-        sum += element
-        averageSum = sum / list.size
+    when {
+        list.isNotEmpty() -> {
+            return list.sum() / list.size
+        }
+        else -> return 0.0
     }
-    return averageSum
 }
 
 /**
@@ -153,7 +145,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     val mean = mean(list)
     for (i in 0 until list.size) {
         val element = list[i]
-        list[i] = element - mean
+        list[i] -= mean
     }
     return list
 }
@@ -182,11 +174,13 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var polynomial = 0.0
-    for (i in 0 until p.size) {
-        polynomial += p[i] * Math.pow(x, i * 1.0)
+    var polyX = 0.0
+    var i = 0.0
+    p.forEach {
+        polyX += it * Math.pow(x, i)
+        i++
     }
-    return polynomial
+    return polyX
 }
 
 /**
@@ -214,14 +208,13 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val list = mutableListOf<Int>()
+    val List = mutableListOf<Int>()
     var number = n
     while (number > 1) {
-        val minDivisor = minDivisor(number)
-        number /= minDivisor
-        list.add(minDivisor)
+        List.add(minDivisor(number))
+        number /= minDivisor(number)
     }
-    return list
+    return List
 }
 
 /**
@@ -261,43 +254,13 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var number = n
-    val list = mutableListOf<String>()
-    if (number == 0) return "0"
-    while (number != 0) {
-        val div = number % base
-        number /= base
-        when (div) {
-            10 -> list.add("a")
-            11 -> list.add("b")
-            12 -> list.add("c")
-            13 -> list.add("d")
-            14 -> list.add("e")
-            15 -> list.add("f")
-            16 -> list.add("g")
-            17 -> list.add("h")
-            18 -> list.add("i")
-            19 -> list.add("j")
-            20 -> list.add("k")
-            21 -> list.add("l")
-            22 -> list.add("m")
-            23 -> list.add("n")
-            24 -> list.add("o")
-            25 -> list.add("p")
-            26 -> list.add("q")
-            27 -> list.add("r")
-            28 -> list.add("s")
-            29 -> list.add("t")
-            30 -> list.add("u")
-            31 -> list.add("v")
-            32 -> list.add("w")
-            33 -> list.add("x")
-            34 -> list.add("y")
-            35 -> list.add("z")
-            else -> list.add(div.toString())
-        }
+    val number = convert(n, base)
+    var str = ""
+    for (i in number) {
+        str += if (i > 9) 'a' + (i - 10)
+        else i
     }
-    return list.reversed().joinToString(separator = "")
+    return str
 }
 
 /**
@@ -308,11 +271,9 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var number = 0.0
-    for (i in 0 until digits.reversed().size) {
-        number += digits.reversed()[i] * Math.pow(base * 1.0, i * 1.0)
-    }
-    return number.toInt()
+    var result = 0
+    for (i in digits) result = result * base + i
+    return result
 }
 
 /**
@@ -325,41 +286,14 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    var number = 0.0
-    val list = mutableListOf<Double>()
-    for (i in 0 until str.length) {
-        when (str[i]) {
-            'a' -> list.add(10.0)
-            'b' -> list.add(11.0)
-            'c' -> list.add(12.0)
-            'd' -> list.add(13.0)
-            'e' -> list.add(14.0)
-            'f' -> list.add(15.0)
-            'g' -> list.add(16.0)
-            'h' -> list.add(17.0)
-            'i' -> list.add(18.0)
-            'j' -> list.add(19.0)
-            'k' -> list.add(20.0)
-            'l' -> list.add(21.0)
-            'm' -> list.add(22.0)
-            'n' -> list.add(23.0)
-            'o' -> list.add(24.0)
-            'p' -> list.add(25.0)
-            'q' -> list.add(26.0)
-            'r' -> list.add(27.0)
-            's' -> list.add(28.0)
-            't' -> list.add(29.0)
-            'u' -> list.add(30.0)
-            'v' -> list.add(31.0)
-            'w' -> list.add(32.0)
-            'x' -> list.add(33.0)
-            'y' -> list.add(34.0)
-            'z' -> list.add(35.0)
-            else -> list.add((str[i] - '0').toDouble())
-        }
+    var n = 0
+    var m = 1
+    for (i in str.length - 1 downTo 0) {
+        if (str[i] <= '9') n += (str[i] - '0') * m
+        else n += (str[i] - ('a' - 10)) * m
+        m *= base
     }
-    number = list.reversed().mapIndexed { i, d -> d * Math.pow(base * 1.0, i * 1.0) }.sum()
-    return number.toInt()
+    return n
 }
 
 /**
@@ -409,42 +343,42 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     val numbersToText: Map<Int, String> = mapOf(
-            Pair(1, "один"),
-            Pair(2, "два"),
-            Pair(3, "три"),
-            Pair(4, "четыре"),
-            Pair(5, "пять"),
-            Pair(6, "шесть"),
-            Pair(7, "семь"),
-            Pair(8, "восемь"),
-            Pair(9, "девять"),
-            Pair(10, "десять"),
-            Pair(11, "одиннадцать"),
-            Pair(12, "двенадцать"),
-            Pair(13, "тринадцать"),
-            Pair(14, "четырнадцать"),
-            Pair(15, "пятнадцать"),
-            Pair(16, "шестнадцать"),
-            Pair(17, "семнадцать"),
-            Pair(18, "восемнадцать"),
-            Pair(19, "девятнадцать"),
-            Pair(20, "двадцать"),
-            Pair(30, "тридцать"),
-            Pair(40, "сорок"),
-            Pair(50, "пятьдесят"),
-            Pair(60, "шестьдесят"),
-            Pair(70, "семьдесят"),
-            Pair(80, "восемьдесят"),
-            Pair(90, "девяносто"),
-            Pair(100, "сто"),
-            Pair(200, "двести"),
-            Pair(300, "триста"),
-            Pair(400, "четыреста"),
-            Pair(500, "пятьсот"),
-            Pair(600, "шестьсот"),
-            Pair(700, "семьсот"),
+            Pair(900, "девятьсот"),
             Pair(800, "восемьсот"),
-            Pair(900, "девятьсот")
+            Pair(700, "семьсот"),
+            Pair(600, "шестьсот"),
+            Pair(500, "пятьсот"),
+            Pair(400, "четыреста"),
+            Pair(300, "триста"),
+            Pair(200, "двести"),
+            Pair(100, "сто"),
+            Pair(90, "девяносто"),
+            Pair(80, "восемьдесят"),
+            Pair(70, "семьдесят"),
+            Pair(60, "шестьдесят"),
+            Pair(50, "пятьдесят"),
+            Pair(40, "сорок"),
+            Pair(30, "тридцать"),
+            Pair(20, "двадцать"),
+            Pair(19, "девятнадцать"),
+            Pair(18, "восемнадцать"),
+            Pair(17, "семнадцать"),
+            Pair(16, "шестнадцать"),
+            Pair(15, "пятнадцать"),
+            Pair(14, "четырнадцать"),
+            Pair(13, "тринадцать"),
+            Pair(12, "двенадцать"),
+            Pair(11, "одиннадцать"),
+            Pair(10, "десять"),
+            Pair(9, "девять"),
+            Pair(8, "восемь"),
+            Pair(7, "семь"),
+            Pair(6, "шесть"),
+            Pair(5, "пять"),
+            Pair(4, "четыре"),
+            Pair(3, "три"),
+            Pair(2, "два"),
+            Pair(1, "один")
     )
     var number = n
     var text = ""
@@ -452,20 +386,18 @@ fun russian(n: Int): String {
     var n2 = n % 1000
     var i = 10
 
-    numbersToText.map{
+    numbersToText.forEach {
         val (num, tex) = it
         while (n2 > 0) {
             if (n2 % i == 0) {
                 i *= 10
-                text += tex
-                number -= num
                 continue
             }
-            if (n2 % 100 in 11..19) i = 100
+            if ((i == 10) && (n2 % 100 in 11..19)) i = 100
             n2 -= n2 % i
             text += tex
             number -= num
-            continue
+            return text
         }
         if (n1 > 0) {
             i = 10
@@ -478,17 +410,18 @@ fun russian(n: Int): String {
                 n1 -= n1 % i
                 text += tex
                 number -= num
-                continue
+                return text
             }
             n1 = n / 1000
             return when {
                 n1 % 10 == 1 -> "одна тысяча"
                 n1 % 10 == 2 -> "две тысячи"
-                n1 % 10 == 3 -> "три тысячи"
-                n1 % 10 == 4 -> "четыре тысячи"
+                n1 % 10 == 3 -> ("три тысячи")
+                n1 % 10 == 4 -> ("четыре тысячи")
                 else -> "тысяч"
             }
         }
     }
     return text + number
 }
+

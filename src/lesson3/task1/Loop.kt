@@ -88,14 +88,14 @@ fun digitNumber(n: Int): Int {
  */
 fun fib(n: Int): Int {
     var a = 1
-    var b = 0
-    var c = 0
-    for (i in 1..n) {
-        c = a + b
+    var b = 1
+    if (n <= 2) return 1
+    for (i in 3..n) {
+        var c = a + b
         a = b
         b = c
     }
-    return c
+    return b
 }
 
 /**
@@ -144,11 +144,12 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val min = Math.min(n, m)
-    var k = 1
-    for (i in 2..min)
-        if (m % i == 0 && n % i == 0) k = i
-    return k == 1
+    val min = Math.min(m, n)
+    var x = true
+    for (i in 2..min) when {
+        n % i == 0 && m % i == 0 -> x = false
+    }
+    return x
 }
 
 /**
@@ -186,17 +187,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
          * этого для какого-либо начального X > 0.
          */
 fun collatzSteps(x: Int): Int {
-    if (x < 1) throw IllegalArgumentException()
     var steps = 0
-    var xCopy = x
-    while (xCopy != 1) {
-        if (xCopy % 2 == 0) xCopy /= 2
-        else xCopy = 3 * xCopy + 1
+    var y = x
+    while (y != 1) {
+        if (y % 2 == 0) y /= 2
+        else y = 3 * y + 1
         steps++
     }
     return steps
 }
-
 /**
  * Средняя
  *
