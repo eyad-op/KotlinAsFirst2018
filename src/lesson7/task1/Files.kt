@@ -54,7 +54,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int>{
+    val text = File(inputName).readText().toLowerCase()
+    val map = mutableMapOf<String, Int>()
+    for (str in substrings) {
+        map.put(str, text.split(str.toLowerCase()).size - 1)
+    }
+    return map
+}
 
 
 /**
@@ -71,7 +78,11 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val text = File(inputName).readText()
+    val chars = mapOf("ы" to "и", "Ы" to "И", "ю" to "у", "Ю" to "У", "я" to "а", "Я" to "А")
+    val writer = File(outputName).bufferedWriter()
+    writer.write(text.replace(Regex("(?<=[жЖшШчЧщЩ])([ыЫюЮяЯ])"), {R -> chars[R.groupValues[1]] ?: R.groupValues[1]} ))
+    writer.close()
 }
 
 /**
@@ -92,8 +103,16 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
-}
+    val lines = File(inputName).readLines().map { it.trim() }
+    var max = 0
+    for (line in lines) if (line.length >= max) max = line.length
+    val writer = File(outputName).bufferedWriter()
+    for (i in 0 until lines.size) {
+        for (j in 1..(max-lines[i].length)/2) writer.write(" ")
+        writer.write(lines[i])
+        if (i != lines.size - 1) writer.newLine()
+    }
+    writer.close()}
 
 /**
  * Сложная
@@ -144,7 +163,15 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val resultMap = mutableMapOf<String, Int>()
+    val words = Regex("""[a-zа-яё]+""").findAll(File(inputName).readText().toLowerCase())
+    for (word in words) {
+        val value = word.value
+        resultMap[value] = (resultMap[value] ?: 0) + 1
+    }
+    return resultMap.toList().sortedByDescending { it.second }.subList(0, 20).toMap()
+}
 
 /**
  * Средняя

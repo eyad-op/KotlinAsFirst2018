@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson3.task1.minDivisor
 import kotlin.math.sqrt
+import lesson3.task1.isPrime
 
 /**
  * Пример
@@ -174,13 +175,16 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var polyX = 0.0
-    var i = 0.0
-    p.forEach {
-        polyX += it * Math.pow(x, i)
-        i++
-    }
-    return polyX
+    if (p.isNotEmpty()) {
+        var func = p.first()
+        val last = p.size
+        val p1 = p.subList(fromIndex = 1, toIndex = last)
+        for ((index, element) in p1.withIndex()) {
+            val index1 = index.toDouble()
+            func += element * Math.pow(x, index1 + 1)
+        }
+        return func
+    } else return 0.0
 }
 
 /**
@@ -208,13 +212,16 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val List = mutableListOf<Int>()
-    var number = n
-    while (number > 1) {
-        List.add(minDivisor(number))
-        number /= minDivisor(number)
+    var result = listOf<Int>()
+    var n1 = n
+    var i = 2
+    while (n1 >= i) {
+        if ((isPrime(i)) && (n1 % i == 0)) {
+            result += i
+            n1 /= i
+        } else i++
     }
-    return List
+    return result.sorted()
 }
 
 /**
