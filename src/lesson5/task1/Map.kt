@@ -123,12 +123,12 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val marksToStuds = mutableMapOf<Int, List<String>>()
+    val StdsGrds = mutableMapOf<Int, List<String>>()
     grades.forEach { (x, y) ->
-        val studList = marksToStuds[y] ?: listOf()
-        marksToStuds[y] = (studList + x).sorted()
+        val studList = StdsGrds[y] ?: listOf()
+        StdsGrds[y] = (studList + x).sortedDescending()
     }
-    return marksToStuds.toSortedMap()
+    return StdsGrds
 }
 
 /**
