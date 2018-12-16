@@ -175,9 +175,13 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var s = 0.0
-    for (i in 0 until p.size) s += p[i] * Math.pow(x, i.toDouble())
-    return s
+    var px = 0.0
+    var i = 0.0
+    for (element in p) {
+        px += element * Math.pow(x, i)
+        i++
+    }
+    return px
 }
 
 /**
@@ -205,13 +209,19 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val divList = mutableListOf<Int>()
-    var m = n
-    while (m > 1) {
-        divList.add(minDivisor(m))
-        m /= minDivisor(m)
+    val result = mutableListOf<Int>()
+    var num = n
+    var prmIndex = 2
+    while (num > 1) {
+        when {
+            num % prmIndex == 0 -> {
+                result.add(prmIndex)
+                num /= prmIndex
+            }
+            else -> prmIndex++
+        }
     }
-    return divList
+    return result
 }
 
 /**
